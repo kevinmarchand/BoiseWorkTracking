@@ -1,0 +1,28 @@
+﻿@(Html.Kendo().Grid<BoiseWorkTracking.Models.ViewModels.EquipmentViewModel>()
+              .Name("Equipment")
+              .Columns(columns =>
+              {
+                  columns.ForeignKey(c => c.DepartmentId, (System.Collections.IEnumerable)ViewData["departments"], "DepartmentID", "Name").Title("Department");
+                  columns.Bound(c => c.Name);
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(240);
+              })
+              .ToolBar(toolbar =>
+              {
+                  toolbar.Create();
+              })
+              .Editable(editable => editable.Mode(GridEditMode.PopUp))
+              .Scrollable()
+              .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .ServerOperation(false)
+                  .Model(model =>
+                  {
+                      model.Id(p => p.EquipmentID);
+                      model.Field(p => p.EquipmentID).Editable(false);
+                  })
+                  .Read(read => read.Action("Equipments_Read", "Equipment"))
+                  .Create(create => create.Action("Equipments_Create", "Equipment"))
+                  .Update(update => update.Action("Equipments_Update", "Equipment"))
+                  .Destroy(destroy => destroy.Action("Equipments_Destroy", "Equipment"))
+              )
+)

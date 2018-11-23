@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Config Page";
+}
+
+<!-- The scrollable area -->
+<div class="container" data-spy="scroll" data-target=".navbar" data-offset="50">
+
+    <nav class="navbar navbar-dark bg-dark">
+        <!-- Navbar content -->
+    </nav>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" ref="#Departments">Departments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Equipments">Equipments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Users">Users</a>
+            </li>
+        </ul>
+    </nav>
+
+    <h2>Configuratio</h2>
+    <br />
+
+    <!-- Departments -->
+    <div id="Departments">
+        <h4>Departments</h4>
+        @Html.Partial("_Department")
+    </div>
+    <br />
+
+    <!-- Equipments -->
+    <div id="Equipments">
+        <h4>Equipments</h4>
+        @Html.Partial("_Equipment")
+    </div>
+    <br />
+
+    <!-- Users -->
+    <div id="Users">
+        <h4>Users</h4>
+        @Html.Partial("_User")
+    </div>
+
+</div>
+
+

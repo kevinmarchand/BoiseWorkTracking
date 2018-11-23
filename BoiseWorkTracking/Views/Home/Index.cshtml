@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-18 col-md-12">
+
+
+            @(Html.Kendo().Grid<BoiseWorkTracking.Models.ViewModels.LogViewModel>()
+                              .Name("Log")
+                              .HtmlAttributes(new { style = "height: 750px;" })
+                              .Columns(columns =>
+                              {
+                                  columns.ForeignKey(c => c.DepartmentID, (System.Collections.IEnumerable)ViewData["departments"], "DepartmentID", "Name").Title("Department");
+                                  columns.ForeignKey(c => c.EquipmentID, (System.Collections.IEnumerable)ViewData["equipments"], "EquipmentID", "Name").Title("Equipment");
+                                  columns.Bound(c => c.Description);
+                                  columns.ForeignKey(c => c.UserID, (System.Collections.IEnumerable)ViewData["users"], "UserID", "Name").Title("User");
+                                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(240);
+                              })
+                              .ToolBar(toolbar =>
+                              {
+                                  toolbar.Create();
+                                  toolbar.Pdf();
+                              })
+                              .ColumnMenu()
+                              .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("LogPopUp"))
+                              .Pageable()
+                              .Sortable(sortable =>
+                              {
+                                  sortable.SortMode(GridSortMode.MultipleColumn);
+                              })
+                              .Filterable()
+                              .Scrollable()
+                              .DataSource(dataSource => dataSource
+                                  .Ajax()
+                                  .Model(model =>
+                                  {
+                                      model.Id(p => p.LogID);
+                                      model.Field(p => p.DepartmentID).DefaultValue(ViewData["departments"] as BoiseWorkTracking.Models.ViewModels.DepartmentViewModel);
+                                      model.Field(p => p.EquipmentID).DefaultValue(ViewData["equipments"] as BoiseWorkTracking.Models.ViewModels.EquipmentViewModel);
+                                      model.Field(p => p.UserID).DefaultValue(ViewData["users"] as BoiseWorkTracking.Models.ViewModels.UserViewModel);
+                                      model.Field(p => p.Description);
+                                  })
+                                  .Read(read => read.Action("Logs_Read", "Log"))
+                                  .Create(create => create.Action("Logs_Create", "Log"))
+                                  .Update(update => update.Action("Logs_Update", "Log"))
+                                  .Destroy(destroy => destroy.Action("Logs_Destroy", "Log"))
+                              )
+            )
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function filterEquipments() {
+        return {
+            department: $("#DepartmentID").val(),
+        };
+    }
+
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+
+</script>
